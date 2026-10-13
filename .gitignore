@@ -4,6 +4,8 @@
 *.log
 *.pyc
 *.swp
+.idea/
+example/assets/widget_test/
 .buildlog/
 .history
 

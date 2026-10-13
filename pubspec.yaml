@@ -1,0 +1,25 @@
+name: widget_test_capture
+description: Capture screenshots, animations, and visual reports from Flutter widget tests.
+version: 0.1.0
+homepage: https://github.com/tz-thantzin/widget_test_capture
+repository: https://github.com/tz-thantzin/widget_test_capture
+issue_tracker: https://github.com/tz-thantzin/widget_test_capture/issues
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.19.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  path: ^1.9.0
+  image: ^4.5.4
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.25.8
+executables:
+  doctor:
+  report:
+  encode:
+  clean:
+  test:
