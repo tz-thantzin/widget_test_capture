@@ -1,6 +1,6 @@
 name: widget_test_capture
 description: Capture screenshots, animations, and visual reports from Flutter widget tests.
-version: 0.1.1
+version: 0.1.2
 homepage: https://github.com/tz-thantzin/widget_test_capture
 repository: https://github.com/tz-thantzin/widget_test_capture
 issue_tracker: https://github.com/tz-thantzin/widget_test_capture/issues
@@ -23,3 +23,7 @@ executables:
   encode:
   clean:
   test:
+
+flutter:
+  assets:
+    - assets/fonts/Roboto-Regular.ttf

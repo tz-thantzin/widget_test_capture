@@ -262,22 +262,12 @@ await withCaptureDevice(tester, phone, () async {
 ```
 
 View simulation does not reproduce a native device or platform implementation.
-Fonts, host OS, and Flutter version can change golden pixels.
+Host OS and Flutter version can change golden pixels.
 
-## 🔤 Fonts and images
-
-Use local assets for deterministic text and images. Flutter widget tests use a
-square font by default. The example registers its local Roboto font once in
-`example/test/flutter_test_config.dart`, so its individual tests need no font
-setup call.
-
-```dart
-await loadCaptureFont('AppFont', 'assets/fonts/AppFont-Regular.ttf');
-await loadCaptureMaterialIcons();
-```
+## 🖼️ Images and assets
 
 `precacheCaptureImage` prepares a local image. `MockNetworkImage` supplies
-in-memory bytes without network access. The package does not download fonts.
+in-memory bytes without network access.
 
 ## 🛠️ Commands
 

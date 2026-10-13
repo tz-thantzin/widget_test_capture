@@ -6,6 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
+import 'assets.dart';
+
 enum GoldenMode { export, compare, update }
 
 /// Compares a captured PNG with Flutter's approved golden baseline.
@@ -15,6 +17,8 @@ Future<void> expectCaptureMatchesGolden(
   GoldenMode mode = GoldenMode.compare,
   String outputDirectory = 'assets/widget_test/goldens',
 }) async {
+  final loadedAppFonts = await tester.runAsync(loadCaptureFontsFromManifest);
+  if (loadedAppFonts == true) await tester.pump();
   final safe = name.replaceAll(RegExp(r'[^A-Za-z0-9_.-]'), '_');
   final path = p.join(outputDirectory, '$safe.png');
   final absolutePath = p.absolute(path);

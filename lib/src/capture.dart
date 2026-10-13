@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as p;
 
+import 'assets.dart';
 import 'config.dart';
 
 /// State and helpers available inside [captureTest].
@@ -28,6 +29,8 @@ class TestCapture {
       Rect? bounds,
       double? pixelRatio,
       Duration? simulatedTime}) async {
+    final loadedAppFonts = await tester.runAsync(loadCaptureFontsFromManifest);
+    if (loadedAppFonts == true) await tester.pump();
     if (finder != null && bounds != null) {
       throw ArgumentError('Choose a Finder or explicit bounds, not both.');
     }
@@ -282,6 +285,7 @@ void captureTest(
   testWidgets(
     description,
     (tester) async {
+      await tester.runAsync(loadCaptureFontsFromManifest);
       final capture = TestCapture(tester, config, description);
       Object? originalError;
       try {

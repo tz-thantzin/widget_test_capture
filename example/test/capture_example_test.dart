@@ -5,10 +5,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:widget_test_capture/widget_test_capture.dart';
 import 'package:widget_test_capture_example/main.dart';
 
+const _captureConfig = CaptureConfig(
+  outputDirectory: 'build/widget_test_capture',
+);
+
 void main() {
   captureTest(
     'counter demo',
-    config: const CaptureConfig(captureAtEnd: true, captureOnFailure: true),
+    config: const CaptureConfig(
+      outputDirectory: 'build/widget_test_capture',
+      captureAtEnd: true,
+      captureOnFailure: true,
+    ),
     (tester, capture) async {
       await tester.pumpWidget(const DemoApp());
       await tester.pumpAndSettle();
@@ -28,29 +36,36 @@ void main() {
     },
   );
 
-  captureTest('panel animation', (tester, capture) async {
-    await tester.pumpWidget(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'DemoRoboto'),
-      home: const AnimatedPanelDemo(),
-    ));
-    await tester.tap(find.byKey(const Key('animate')));
-    final frames = await capture.recordAnimation('panel',
-        duration: const Duration(seconds: 2), fps: 15);
-    await encodeAnimationGif(
-        frames, File('assets/widget_test/gifs/panel_animation_1.gif'),
-        fps: 15);
-  });
+  captureTest(
+    'panel animation',
+    (tester, capture) async {
+      await tester.pumpWidget(MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const AnimatedPanelDemo(),
+      ));
+      await tester.tap(find.byKey(const Key('animate')));
+      final frames = await capture.recordAnimation('panel',
+          duration: const Duration(seconds: 2), fps: 15);
+      await encodeAnimationGif(
+          frames, File('build/widget_test_capture/gifs/panel_animation_1.gif'),
+          fps: 15);
+    },
+    config: _captureConfig,
+  );
 
-  captureTest('storyboard', (tester, capture) async {
-    await tester.pumpWidget(const MaterialApp(home: DemoApp()));
-    final initial = await capture.png('initial');
-    await tester.tap(find.byKey(const Key('increment')));
-    await tester.pumpAndSettle();
-    final updated = await capture.png('updated');
-    await encodeStoryboard(
-        [initial, updated], 'assets/widget_test/gifs/storyboard_1.gif');
-  });
+  captureTest(
+    'storyboard',
+    (tester, capture) async {
+      await tester.pumpWidget(const MaterialApp(home: DemoApp()));
+      final initial = await capture.png('initial');
+      await tester.tap(find.byKey(const Key('increment')));
+      await tester.pumpAndSettle();
+      final updated = await capture.png('updated');
+      await encodeStoryboard([initial, updated],
+          'build/widget_test_capture/gifs/storyboard_1.gif');
+    },
+    config: _captureConfig,
+  );
 }
 
 class AnimatedPanelDemo extends StatefulWidget {

@@ -7,13 +7,13 @@ Future<void> main(List<String> args) async {
     stderr.writeln('Usage: dart run tool/encode_video.dart');
     stderr.writeln(
       'Run `flutter test` first. The tool converts panel animation frames '
-      'into assets/widget_test/videos/panel_animation_1.mp4.',
+      'into build/widget_test_capture/videos/panel_animation_1.mp4.',
     );
     exitCode = 64;
     return;
   }
 
-  final screenshots = Directory('assets/widget_test/screenshots');
+  final screenshots = Directory('build/widget_test_capture/screenshots');
   final frameDirectories = screenshots.existsSync()
       ? screenshots
           .listSync()
@@ -46,7 +46,7 @@ Future<void> main(List<String> args) async {
     return;
   }
 
-  final output = File('assets/widget_test/videos/panel_animation_1.mp4');
+  final output = File('build/widget_test_capture/videos/panel_animation_1.mp4');
   try {
     await encodeMp4(frames, output, fps: 15);
     stdout.writeln('Created ${output.path}');

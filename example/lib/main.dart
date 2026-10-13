@@ -10,7 +10,6 @@ class DemoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'DemoRoboto'),
         home: Scaffold(
           appBar: AppBar(title: const Text('Capture demo')),
           body: const Center(child: DemoCounter()),

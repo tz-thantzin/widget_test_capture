@@ -7,11 +7,11 @@ flutter test
 ```
 
 The tests write numbered PNG checkpoints under
-`assets/widget_test/screenshots/`. A test named `counter demo` produces files
+`build/widget_test_capture/screenshots/`. A test named `counter demo` produces files
 such as `counter_demo_1.png`, `counter_demo_2.png`, and so on. Each test run
 uses its own folder to prevent repeated or parallel runs from overwriting files.
-The tests also create `assets/widget_test/gifs/panel_animation_1.gif` and
-`assets/widget_test/gifs/storyboard_1.gif`.
+The tests also create `build/widget_test_capture/gifs/panel_animation_1.gif`
+and `build/widget_test_capture/gifs/storyboard_1.gif`.
 
 The example app has Android, iOS, and web project files. To launch the app,
 list available targets and choose a device:
@@ -43,5 +43,5 @@ FFmpeg, run the tests, then encode the recorded animation frames:
 dart run tool/encode_video.dart
 ```
 
-The tool creates `assets/widget_test/videos/panel_animation_1.mp4`. It preserves
+The tool creates `build/widget_test_capture/videos/panel_animation_1.mp4`. It preserves
 PNG frames if FFmpeg is missing or encoding fails.
