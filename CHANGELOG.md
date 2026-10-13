@@ -1,3 +1,7 @@
+## 0.1.1
+
+- Fix the library documentation comment in the pure-Dart encoder entrypoint.
+
 ## 0.1.0
 
 - Initial host widget-test capture API.
