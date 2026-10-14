@@ -17,7 +17,8 @@ Future<void> expectCaptureMatchesGolden(
   GoldenMode mode = GoldenMode.compare,
   String outputDirectory = 'assets/widget_test/goldens',
 }) async {
-  final loadedAppFonts = await tester.runAsync(loadCaptureFontsFromManifest);
+  final loadedAppFonts =
+      await tester.runAsync(() => loadCaptureFontsForWidgets(tester));
   if (loadedAppFonts == true) await tester.pump();
   final safe = name.replaceAll(RegExp(r'[^A-Za-z0-9_.-]'), '_');
   final path = p.join(outputDirectory, '$safe.png');

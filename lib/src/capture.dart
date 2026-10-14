@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:isolate';
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
@@ -29,7 +31,8 @@ class TestCapture {
       Rect? bounds,
       double? pixelRatio,
       Duration? simulatedTime}) async {
-    final loadedAppFonts = await tester.runAsync(loadCaptureFontsFromManifest);
+    final loadedAppFonts =
+        await tester.runAsync(() => loadCaptureFontsForWidgets(tester));
     if (loadedAppFonts == true) await tester.pump();
     if (finder != null && bounds != null) {
       throw ArgumentError('Choose a Finder or explicit bounds, not both.');
@@ -289,7 +292,7 @@ void captureTest(
       final capture = TestCapture(tester, config, description);
       Object? originalError;
       try {
-        await callback(tester, capture);
+        await _runCaptureCallback(() => callback(tester, capture));
       } catch (error, stack) {
         originalError = error;
         if (config.captureOnFailure) {
@@ -309,6 +312,62 @@ void captureTest(
     timeout: timeout,
     variant: variant ?? const DefaultTestVariant(),
   );
+}
+
+Future<void> _runCaptureCallback(Future<void> Function() callback) async {
+  final completed = Completer<void>();
+  final parentZone = Zone.current;
+  final originalDebugPrint = foundation.debugPrint;
+  foundation.debugPrint = (message, {wrapWidth}) {
+    if (_isGoogleFontsDiagnostic(message)) return;
+    originalDebugPrint(message, wrapWidth: wrapWidth);
+  };
+  runZonedGuarded(
+    () async {
+      try {
+        await callback();
+        completed.complete();
+      } catch (error, stack) {
+        completed.completeError(error, stack);
+      }
+    },
+    (error, stack) {
+      if (_isUnavailableRuntimeFont(error)) return;
+      parentZone.handleUncaughtError(error, stack);
+    },
+    zoneSpecification: ZoneSpecification(
+      print: (self, parent, zone, line) {
+        if (!_isGoogleFontsDiagnostic(line)) parent.print(zone, line);
+      },
+    ),
+  );
+  try {
+    await completed.future;
+  } finally {
+    foundation.debugPrint = originalDebugPrint;
+  }
+}
+
+bool _isGoogleFontsDiagnostic(String? message) {
+  if (message == null) return false;
+  final normalized = message.toLowerCase();
+  return normalized.contains('google_fonts was unable to load font') ||
+      normalized.contains('fonts.gstatic.com') ||
+      normalized.contains('google_fonts/example/test') ||
+      normalized.contains(
+        'if troubleshooting doesn\'t solve the problem, please file an issue',
+      );
+}
+
+bool _isUnavailableRuntimeFont(Object error) {
+  final message = error.toString().toLowerCase();
+  final isGoogleFonts = message.contains('google_fonts') ||
+      message.contains('googlefonts') ||
+      message.contains('fonts.gstatic.com');
+  return isGoogleFonts &&
+      (message.contains('unable to load font') ||
+          message.contains('allowruntimefetching is false') ||
+          message.contains('failed to load font with url'));
 }
 
 String safeName(String input) {
