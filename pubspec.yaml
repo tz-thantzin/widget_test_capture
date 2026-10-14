@@ -1,6 +1,6 @@
 name: widget_test_capture
 description: Capture screenshots, animations, and visual reports from Flutter widget tests.
-version: 0.1.2
+version: 0.2.0
 homepage: https://github.com/tz-thantzin/widget_test_capture
 repository: https://github.com/tz-thantzin/widget_test_capture
 issue_tracker: https://github.com/tz-thantzin/widget_test_capture/issues

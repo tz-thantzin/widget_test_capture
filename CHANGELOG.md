@@ -1,3 +1,9 @@
+## 0.2.0
+
+- Render captured text with a bundled fallback font when the app's font is unavailable in widget tests.
+- Load app-declared fonts before PNG and golden captures.
+- Handle unavailable runtime Google Fonts without flooding capture test output.
+
 ## 0.1.2
 
 - Automatically load app-declared fonts for widget capture and golden helpers.
